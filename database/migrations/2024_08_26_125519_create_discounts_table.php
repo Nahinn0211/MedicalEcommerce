@@ -13,17 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->string('productCode')->unique();
             $table->string('name');
-            $table->string('origin');
-            $table->string('manufacturer');
-            $table->bigInteger('brandId')->unsigned();
-            $table->bigInteger('itemId')->unsigned();
-            $table->text('description');
-            $table->foreign('brandId')->references('id')->on('brands');
-            $table->foreign('itemId')->references('id')->on('product_item');
+            $table->decimal('discount_amount', 10, 2)->nullable(); // Số tiền giảm giá (nếu có)
+            $table->integer('discount_percentage')->nullable(); // Phần trăm giảm giá (nếu có)
+            $table->dateTime('valid_from')->nullable(); // Thời gian bắt đầu có hiệu lực
+            $table->dateTime('valid_until')->nullable(); // Thời gian hết hạn
             $table->tinyInteger('row_delete')->default(0);
             $table->timestamps();
         });
@@ -36,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('discounts');
     }
 };
